@@ -2,65 +2,26 @@ import Link from 'next/link'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Calendar, MapPin, ArrowRight } from 'lucide-react'
+import { sanityFetch } from '@/lib/sanity/client'
+import { allEventsQuery } from '@/lib/sanity/queries'
+import { Event } from '@/lib/sanity/types'
 
 export const metadata = {
   title: 'Etkinlikler - Anadolu Diyabet Derneği',
 }
 
-// Örnek etkinlikler (gerçek veriler Sanity'den gelecek)
-// Tarihe göre otomatik yaklaşan/geçmiş ayrımı yapılır
-const sampleEvents = [
-  {
-    _id: '1',
-    title: 'Diyabet ve Beslenme Semineri',
-    slug: { current: 'diyabet-beslenme-semineri' },
-    description: 'Uzman diyetisyenler tarafından verilecek seminerde diyabetli bireyler için beslenme önerileri ele alınacak.',
-    eventDate: '2026-03-15T14:00:00', // Gelecek tarih
-    location: 'İstanbul, Kadıköy',
-  },
-  {
-    _id: '2',
-    title: 'Ücretsiz Kan Şekeri Taraması',
-    slug: { current: 'kan-sekeri-taramasi' },
-    description: 'Toplum sağlığı için ücretsiz kan şekeri taraması etkinliğimize tüm halkımız davetlidir.',
-    eventDate: '2026-04-20T10:00:00', // Gelecek tarih
-    location: 'İstanbul, Beşiktaş',
-  },
-  {
-    _id: '3',
-    title: 'Yılbaşı Diyabetli Buluşması',
-    slug: { current: 'yilbasi-bulusmasi' },
-    description: 'Diyabetli bireyler ve ailelerinin bir araya geleceği yılbaşı etkinliğimizde keyifli bir program sizi bekliyor.',
-    eventDate: '2026-05-10T16:00:00', // Gelecek tarih
-    location: 'İstanbul, Şişli',
-  },
-  {
-    _id: '4',
-    title: 'Diyabet Farkındalık Günü',
-    slug: { current: 'farkindalik-gunu' },
-    description: 'Geçtiğimiz ay düzenlediğimiz farkındalık gününden kareler.',
-    eventDate: '2025-01-15T13:00:00', // Geçmiş tarih
-    location: 'İstanbul, Taksim',
-  },
-  {
-    _id: '5',
-    title: 'Eğitim Semineri: Tip 1 Diyabet',
-    slug: { current: 'tip1-diyabet-egitimi' },
-    description: 'Çocuk ve ergenlerde Tip 1 diyabet yönetimi hakkında kapsamlı eğitim.',
-    eventDate: '2025-02-20T10:00:00', // Geçmiş tarih
-    location: 'İstanbul, Bakırköy',
-  },
-]
+export default async function EventsPage() {
+  // Sanity'den etkinlikleri çek
+  const events: Event[] = await sanityFetch(allEventsQuery)
 
-export default function EventsPage() {
   const now = new Date()
 
   // Tarihe göre otomatik ayrım
-  const upcomingEvents = sampleEvents
+  const upcomingEvents = events
     .filter(e => new Date(e.eventDate) > now)
     .sort((a, b) => new Date(a.eventDate).getTime() - new Date(b.eventDate).getTime())
 
-  const pastEvents = sampleEvents
+  const pastEvents = events
     .filter(e => new Date(e.eventDate) <= now)
     .sort((a, b) => new Date(b.eventDate).getTime() - new Date(a.eventDate).getTime())
 
@@ -77,6 +38,22 @@ export default function EventsPage() {
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Admin Bilgisi */}
+        {events.length === 0 && (
+          <div className="bg-[#E8F4FD] border border-[#0066CC] rounded-lg p-6 mb-8">
+            <h3 className="font-semibold text-[#0066CC] mb-2">İçerik Ekleme</h3>
+            <p className="text-gray-600 mb-3">
+              Henüz etkinlik eklenmemiş. İçerik eklemek için:
+            </p>
+            <ol className="list-decimal list-inside text-gray-600 space-y-1">
+              <li><a href="/admin" className="text-[#0066CC] underline">Admin paneline</a> gidin</li>
+              <li>Sol menüden &quot;Etkinlikler&quot; seçin</li>
+              <li>&quot;Yeni Etkinlik Ekle&quot; butonuna tıklayın</li>
+              <li>Bilgileri doldurup kaydedin</li>
+            </ol>
+          </div>
+        )}
+
         {/* Upcoming Events */}
         {upcomingEvents.length > 0 && (
           <>
@@ -162,7 +139,13 @@ export default function EventsPage() {
         {/* No Events Message */}
         {upcomingEvents.length === 0 && pastEvents.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-gray-500">Henüz etkinlik bulunmamaktadır.</p>
+            <p className="text-gray-500 mb-4">Henüz etkinlik bulunmamaktadır.</p>
+            <a
+              href="/admin"
+              className="inline-block bg-[#0066CC] text-white px-6 py-3 rounded-lg hover:bg-[#0052a3] transition-colors"
+            >
+              Admin Paneline Git
+            </a>
           </div>
         )}
       </div>
