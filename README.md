@@ -1,36 +1,138 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Anadolu Diyabet Derneği Website
 
-## Getting Started
+Anadolu Diyabet Derneği için Next.js + Sanity CMS ile geliştirilmiş modern, hızlı ve kullanıcı dostu bir website.
 
-First, run the development server:
+## 🌐 Canlı Site
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+https://anadoludiyabet.com
+
+## ✨ Özellikler
+
+- **Modern Tasarım** - Responsive, mobil uyumlu arayüz
+- **Hızlı Performans** - Next.js 14 ile SSR/SSG
+- **Kolay Yönetim** - Sanity CMS entegrasyonu
+- **SEO Dostu** - Otomatik SEO optimizasyonu
+- **Güvenli** - .env ile korunan API anahtarları
+
+## 🛠️ Teknolojiler
+
+- **Frontend:** Next.js 14, React, TypeScript, Tailwind CSS
+- **UI:** shadcn/ui bileşenleri
+- **CMS:** Sanity.io (Headless CMS)
+- **Hosting:** Vercel
+- **Font:** Inter
+
+## 📁 Proje Yapısı
+
+```
+app/
+├── site/              # Ziyaretçi sayfaları
+│   ├── page.tsx       # Ana sayfa
+│   ├── hakkimizda/    # Hakkımızda
+│   ├── haberler/      # Haberler listesi + detay
+│   ├── etkinlikler/   # Etkinlik takvimi
+│   ├── galeri/        # Fotoğraf albümleri
+│   ├── yayinlar/      # PDF yayınlar
+│   └── iletisim/      # İletişim formu
+├── admin/             # Sanity Studio (CMS)
+└── layout.tsx         # Root layout
+
+components/
+├── layout/            # Navbar, Footer
+├── ui/                # shadcn/ui bileşenleri
+└── shared/            # Paylaşılan bileşenler
+
+sanity/
+├── schemaTypes/       # CMS içerik şemaları
+│   ├── news.ts        # Haberler
+│   ├── event.ts       # Etkinlikler
+│   ├── gallery.ts     # Galeri
+│   ├── publication.ts # Yayınlar
+│   ├── page.ts        # Sayfalar
+│   └── siteSettings.ts # Site ayarları
+└── config.ts          # Sanity yapılandırması
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Kurulum
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Gereksinimler
+- Node.js 18+
+- npm veya yarn
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Adımlar
 
-## Learn More
+1. **Repoyu klonlayın:**
+```bash
+git clone https://github.com/syrexi/anadolu-diyabet-web.git
+cd anadolu-diyabet-web
+```
 
-To learn more about Next.js, take a look at the following resources:
+2. **Bağımlılıkları yükleyin:**
+```bash
+npm install
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. **Çevre değişkenlerini ayarlayın:**
+```bash
+cp .env.local.example .env.local
+```
+`.env.local` dosyasını düzenleyin:
+```
+NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
+NEXT_PUBLIC_SANITY_DATASET=production
+SANITY_API_READ_TOKEN=your_token
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+4. **Geliştirme sunucusunu başlatın:**
+```bash
+npm run dev
+```
 
-## Deploy on Vercel
+5. **Tarayıcıda açın:**
+http://localhost:3000
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📝 Admin Panel Kullanımı
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Giriş
+1. `/admin` adresine gidin
+2. Sanity hesabı ile giriş yapın
+
+### İçerik Ekleme
+- **Haber:** Sol menüden "Haberler" → "Yeni Haber Ekle"
+- **Etkinlik:** "Etkinlikler" → Tarih girin (otomatik yaklaşan/geçmiş ayrımı)
+- **Galeri:** "Galeri" → Albüm oluşturun, fotoğrafları sürükleyin
+- **Yayın:** "Yayınlar" → PDF yükleyin
+
+## 🚀 Deploy
+
+### Vercel'e Deploy
+```bash
+npm i -g vercel
+vercel --prod
+```
+
+### Godaddy Domain Ayarı
+1. Vercel dashboard'dan domain ekle
+2. Godaddy DNS ayarlarına Vercel'in verdiği kayıtları ekle
+
+## 👥 Katkıda Bulunma
+
+1. Fork yapın
+2. Feature branch oluşturun (`git checkout -b feature/amazing`)
+3. Commit yapın (`git commit -m 'Add amazing feature'`)
+4. Push yapın (`git push origin feature/amazing`)
+5. Pull Request açın
+
+## 📄 Lisans
+
+MIT License
+
+## 📞 İletişim
+
+Anadolu Diyabet Derneği
+- Website: https://anadoludiyabet.com
+- E-posta: info@anadoludiyabet.com
+
+---
+
+**Geliştirici:** Claude (Anthropic) + Dernek Yönetimi
